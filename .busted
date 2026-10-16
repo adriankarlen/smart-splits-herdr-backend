@@ -1,0 +1,12 @@
+-- Busted test configuration
+return {
+  _all = {
+    lua = 'nlua',
+    helper = 'tests/init.lua',
+    pattern = '_spec',
+  },
+  default = { ROOT = { 'tests/core' } },
+  core = { ROOT = { 'tests/core' } },
+  -- drives a real herdr server in a private session; skipped when herdr is absent
+  integration = { ROOT = { 'tests/integration' } },
+}

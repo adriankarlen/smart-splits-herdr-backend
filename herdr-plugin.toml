@@ -1,0 +1,39 @@
+id = "smart-splits-backend-herdr"
+name = "smart-splits-backend-herdr"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Seamless navigation across herdr panes and Neovim splits, for smart-splits.nvim v3"
+platforms = ["linux", "macos"]
+
+# One action per direction. Bind them in herdr's config.toml (see README):
+#
+#   [[keys.command]]
+#   key = "ctrl+h"
+#   type = "plugin_action"
+#   command = "smart-splits-backend-herdr.left"
+#
+# and likewise for ctrl+j/k/l with the down/up/right actions.
+
+[[actions]]
+id = "left"
+title = "Navigate left (Neovim/herdr)"
+contexts = ["global"]
+command = ["bash", "scripts/herdr-navigate.sh", "left"]
+
+[[actions]]
+id = "down"
+title = "Navigate down (Neovim/herdr)"
+contexts = ["global"]
+command = ["bash", "scripts/herdr-navigate.sh", "down"]
+
+[[actions]]
+id = "up"
+title = "Navigate up (Neovim/herdr)"
+contexts = ["global"]
+command = ["bash", "scripts/herdr-navigate.sh", "up"]
+
+[[actions]]
+id = "right"
+title = "Navigate right (Neovim/herdr)"
+contexts = ["global"]
+command = ["bash", "scripts/herdr-navigate.sh", "right"]
