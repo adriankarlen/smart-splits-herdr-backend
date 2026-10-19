@@ -4,8 +4,9 @@ A [herdr](https://herdr.dev) backend for [smart-splits.nvim](https://github.com/
 v3.
 
 One set of keys works across the Neovim/herdr boundary. `<C-hjkl>` moves through Neovim's windows until there are no
-more, then carries on through herdr's panes. `<M-hjkl>` resizes the same way. At the outer edge of herdr, the movement
-keys can wrap around or create a new herdr pane, depending on what you set.
+more, then carries on through herdr's panes. At the outer edge of herdr, the movement keys can wrap around or create a
+new herdr pane, depending on what you set. From inside Neovim, `<M-hjkl>` also resizes the herdr pane once Neovim's
+window fills that direction.
 
 smart-splits.nvim included herdr support up to v2. v3 moved every multiplexer out into a separate plugin, and this
 plugin brings herdr support back, against the
@@ -35,7 +36,7 @@ With `vim.pack`:
 ```lua
 vim.pack.add({
   'https://github.com/smart-splits-nvim/smart-splits.nvim',
-  'https://github.com/adriankarlen/smart-splits-herdr-backend',
+  'https://github.com/adriankarlen/smart-splits-backend-herdr',
 })
 
 require('smart-splits').setup({
@@ -51,7 +52,7 @@ With [lazy.nvim](https://github.com/folke/lazy.nvim):
   version = '^3.0.0',
   dependencies = {
     {
-      'adriankarlen/smart-splits-herdr-backend',
+      'adriankarlen/smart-splits-backend-herdr',
       main = 'smart-splits-backend-herdr',
       opts = {}, -- see Options
     },
@@ -90,16 +91,16 @@ mux = { backend = { 'smart-splits-backend-herdr', 'smart-splits-backend-ghostty'
 Install the herdr plugin from GitHub:
 
 ```sh
-herdr plugin install adriankarlen/smart-splits-herdr-backend
+herdr plugin install adriankarlen/smart-splits-backend-herdr
 ```
 
 Or link the copy your Neovim plugin manager already has. The path depends on your plugin manager:
 
 ```sh
 # vim.pack
-herdr plugin link ~/.local/share/nvim/site/pack/core/opt/smart-splits-herdr-backend
+herdr plugin link ~/.local/share/nvim/site/pack/core/opt/smart-splits-backend-herdr
 # lazy.nvim
-herdr plugin link ~/.local/share/nvim/lazy/smart-splits-herdr-backend
+herdr plugin link ~/.local/share/nvim/lazy/smart-splits-backend-herdr
 ```
 
 Bind the keys in `~/.config/herdr/config.toml`:
@@ -158,7 +159,7 @@ the warning `manifest unavailable`. To move to this plugin:
 
 ```sh
 herdr plugin unlink smart-splits.nvim
-herdr plugin install adriankarlen/smart-splits-herdr-backend   # or `herdr plugin link`, see above
+herdr plugin install adriankarlen/smart-splits-backend-herdr   # or `herdr plugin link`, see above
 ```
 
 In `config.toml`, change each `command = "smart-splits.nvim.<dir>"` to `command = "smart-splits-backend-herdr.<dir>"`.
@@ -206,7 +207,8 @@ pane may already fill that row or column on its own.
 ### Resizing
 
 smart-splits.nvim calls the backend only when the Neovim window already fills that axis. The backend then moves a
-border of its herdr pane towards the direction you pressed. herdr measures resizes as a fraction of the split, so the
+border of its herdr pane towards the direction you pressed. This only works from inside Neovim: the herdr plugin does
+not handle resize keys. In other panes, use herdr's own `resize_mode` or `resize_pane_*` bindings. herdr measures resizes as a fraction of the split, so the
 backend reads the layout and converts smart-splits.nvim's cell count into that fraction.
 
 ### Zoom
